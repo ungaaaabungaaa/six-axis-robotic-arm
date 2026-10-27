@@ -1,0 +1,11 @@
+# Six-axis arm implementation plan
+
+Approved project 14: Machine-Learning-in-data-Scienc → six-axis-robotic-arm. Original main be436a35b358590eb6f521d2e5f3a0013b7dd5c6 is preserved and verified remotely at archive/before-six-axis-arm-2026-10-27. Rename retained ID 484511123 / R_kgDOHOENkw, 18 stars and main. The old tree has README/course notebooks/data but no AGENTS, LICENSE, COPYING or NOTICE path. Do not reuse old notebook/data/certificate assets. New source uses Apache-2.0 and attributes any shared geometry/timing utility adapted from the owned LiDAR arm project.
+
+Deliver a distinct six-rotation-joint pose laboratory: base yaw, shoulder/elbow pitch and a co-located X-Y-X spherical wrist, plus a tool offset. Implement full position and orientation FK/analytic IK, branch and singular wrist handling, independently checked residuals, conservative swept collision checks, finite route search, rate-bounded timing and a fault-latched host reference-runner emulator. No real motors, MCU firmware, commercial robot compatibility, ROS or physical arm claim.
+
+1. Write model/math/input/control/work-budget contract. Test proper rotation composition, FK/IK roundtrips across elbow/yaw/wrist branches and singular orientations, Jacobian finite differences, unreachable/joint/invalid/sparse inputs.
+2. Implement original lean ESM modules and shared-source attributed geometry/timing. Cover all swept segments, floor/self/obstacle constraints, accepted and failed route cases, bounded global work and deterministic plans.
+3. Add controller-state tests for neutral boot, explicit arm/start/stop, mismatch, stale time/watchdog and no output after fault. No physical port or flash action.
+4. Add full-pose target/branch selection, 3D orbit/replay, six joint/orientation tables and actual measured multi-case results; make input edits invalidate old evidence. Browser worker and CLI share core.
+5. Add approved cover 14 and portable provenance, model/assembly/BOM/calibration/control docs, history honesty, CI across Node22/24 and three OSes, tests/build/reproduction and independent review. Commit/push/attach PR; root merges after review and green CI. Keep MyPortfolio/protected repositories unchanged. Clean only task sources after verified remote merge.

@@ -1,0 +1,16 @@
+scene,seed,status,ikSolutions,branch,wristSingular,positionResidual,orientationResidual,method,collisionEvaluations,controllerValidationEvaluations,totalPoseEvaluations,waypoints,frames,durationSeconds,maxVelocityObserved,maxAccelerationObserved,controlStatus
+inspection,1,planned,4,0,false,0,0,direct,276,138,414,2,30,1.45,0.903021,1.921531,COMPLETED
+inspection,2,planned,4,0,false,0,0,direct,276,138,414,2,30,1.45,0.903021,1.921531,COMPLETED
+inspection,3,planned,4,0,false,0,0,direct,276,138,414,2,30,1.45,0.903021,1.921531,COMPLETED
+fixture,1,planned,6,0,false,0,0,rrt,1884,552,2436,30,427,21.3,0.52218,1.993769,COMPLETED
+fixture,2,planned,6,0,false,0,0,rrt,3879,433,4312,22,310,15.45,0.522739,1.967957,COMPLETED
+fixture,3,planned,6,0,false,0,0,rrt,2233,405,2638,23,316,15.75,0.52218,1.971374,COMPLETED
+blocked,1,goal_in_collision,4,0,false,0,0,,2,0,2,0,0,,,,
+blocked,2,goal_in_collision,4,0,false,0,0,,2,0,2,0,0,,,,
+blocked,3,goal_in_collision,4,0,false,0,0,,2,0,2,0,0,,,,
+far,1,geometric_out_of_reach,0,,,,,,0,0,0,0,0,,,,
+far,2,geometric_out_of_reach,0,,,,,,0,0,0,0,0,,,,
+far,3,geometric_out_of_reach,0,,,,,,0,0,0,0,0,,,,
+singular,1,planned,3,0,true,0,0,direct,226,113,339,2,34,1.65,0.987725,1.846644,COMPLETED
+singular,2,planned,3,0,true,0,0,direct,226,113,339,2,34,1.65,0.987725,1.846644,COMPLETED
+singular,3,planned,3,0,true,0,0,direct,226,113,339,2,34,1.65,0.987725,1.846644,COMPLETED

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Axis / Six-axis pose lab</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand">AXIS<span> / SIX-AXIS POSE LAB</span></a
+      ><span class="tag">SOFTWARE BENCH · 0.1</span>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">SIX JOINTS. POSITION + ORIENTATION.</p>
+          <h1>Place the tool.<br />Choose its angle.</h1>
+        </div>
+        <p>
+          Explore full-pose kinematics, choose an inverse solution, and replay a checked reference.
+          Every route is measured in this model. Physical hardware is still to come.
+        </p>
+      </section>
+      <section class="lab" aria-label="Six-axis pose laboratory">
+        <aside>
+          <form id="config">
+            <h2>Define a target</h2>
+            <label for="scene">Bench scene</label
+            ><select id="scene">
+              <option value="inspection">01 / Inspection pose</option>
+              <option value="fixture">02 / Reach around fixture</option>
+              <option value="blocked">03 / Blocked tool pose</option>
+              <option value="far">04 / Beyond reach</option>
+              <option value="singular">05 / Aligned wrist</option>
+            </select>
+            <p class="hint" id="scene-help"></p>
+            <fieldset>
+              <legend>Tool position · metres</legend>
+              <div class="triple">
+                <label>x<input id="x" type="number" min="-2" max="2" step="any" required /></label
+                ><label>y<input id="y" type="number" min="-2" max="2" step="any" required /></label
+                ><label>z<input id="z" type="number" min="-2" max="2" step="any" required /></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Tool orientation · degrees</legend>
+              <div class="triple">
+                <label
+                  >Roll<input
+                    id="roll"
+                    type="number"
+                    min="-180"
+                    max="180"
+                    step="any"
+                    required /></label
+                ><label
+                  >Pitch<input
+                    id="pitch"
+                    type="number"
+                    min="-90"
+                    max="90"
+                    step="any"
+                    required /></label
+                ><label
+                  >Yaw<input id="yaw" type="number" min="-180" max="180" step="any" required
+                /></label>
+              </div>
+              <p class="hint">Rz(yaw) · Ry(pitch) · Rx(roll)</p>
+            </fieldset>
+            <label for="branch">IK solution</label
+            ><select id="branch">
+              <option value="0">0 / closest to home</option>
+            </select>
+            <div class="double">
+              <label
+                >Search seed<input
+                  id="seed"
+                  type="number"
+                  min="0"
+                  max="4294967295"
+                  step="1"
+                  value="1"
+                  required /></label
+              ><label
+                >Pose budget<input
+                  id="budget"
+                  type="number"
+                  min="1"
+                  max="30000"
+                  step="1"
+                  value="30000"
+                  required
+              /></label>
+            </div>
+            <button id="run" class="primary">Solve & plan <span>↗</span></button>
+          </form>
+          <p class="model-note">
+            Ideal spherical wrist with a tool offset. Shared wrist centres and axial envelopes
+            simplify collision geometry. No real controller or device is connected.
+          </p>
+        </aside>
+        <div class="stage">
+          <div class="stage-top">
+            <h2>Pose & path</h2>
+            <span id="status" role="status" aria-live="polite">Ready to solve</span>
+          </div>
+          <canvas
+            id="view"
+            width="1100"
+            height="690"
+            role="img"
+            aria-label="Projected six-axis arm, desired and current tool axes, obstacle boxes and TCP path. Values are also in the tables below."
+          ></canvas>
+          <div class="legend">
+            <span><i class="arm"></i>Arm / TCP trail</span
+            ><span><i class="target"></i>Target origin</span><span><i class="box"></i>Obstacle</span
+            ><span>Tool axes: <b class="x">x</b> <b class="y">y</b> <b class="z">z</b></span>
+          </div>
+          <div class="camera">
+            <label>Orbit<input id="azimuth" type="range" min="-180" max="180" value="-50" /></label
+            ><label
+              >Elevation<input id="elevation" type="range" min="10" max="80" value="30"
+            /></label>
+          </div>
+          <div class="transport">
+            <button id="play" type="button" disabled>Play</button
+            ><button id="step" type="button" disabled>Step</button
+            ><input
+              id="frame"
+              type="range"
+              min="0"
+              max="0"
+              value="0"
+              disabled
+              aria-label="Replay frame"
+            /><output id="time">0.00 s</output>
+          </div>
+          <p id="outcome" class="outcome">
+            Run the bench to inspect supported inverse solutions and a selected route.
+          </p>
+        </div>
+      </section>
+      <section class="results">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">KINEMATIC EVIDENCE</p>
+            <h2>See the complete pose.</h2>
+          </div>
+          <button id="export" type="button" disabled>Export JSON ↓</button>
+        </div>
+        <div class="stats">
+          <div><span>Solutions / selected</span><strong id="solutions">—</strong></div>
+          <div><span>Route / planner checks</span><strong id="route">—</strong></div>
+          <div><span>Reference time</span><strong id="duration">—</strong></div>
+          <div><span>Ideal control runner</span><strong id="control">—</strong></div>
+        </div>
+        <p id="singularity" class="notice">No current solution.</p>
+        <div class="tables">
+          <div>
+            <h3>Six-joint reference</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Joint</th>
+                  <th scope="col">rad</th>
+                  <th scope="col">rad/s</th>
+                  <th scope="col">rad/s²</th>
+                </tr>
+              </thead>
+              <tbody id="joints"></tbody>
+            </table>
+            <p id="tcp" class="hint"></p>
+          </div>
+          <div>
+            <h3>Tool pose at this frame</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Value</th>
+                  <th scope="col">x / roll</th>
+                  <th scope="col">y / pitch</th>
+                  <th scope="col">z / yaw</th>
+                </tr>
+              </thead>
+              <tbody id="pose"></tbody>
+            </table>
+            <p id="residual" class="hint">FK residuals will appear after a solution.</p>
+            <p id="rates" class="hint"></p>
+            <h3 class="matrix-heading">Tool rotation · row-major</h3>
+            <pre id="rotation"></pre>
+          </div>
+        </div>
+      </section>
+      <section class="limits">
+        <p class="eyebrow">WHAT THIS PROVES</p>
+        <h2>A reproducible model.<br />A clear physical boundary.</h2>
+        <p>
+          The lab solves the stated ideal arm geometry and checks full joint-motion segments against
+          conservative static envelopes. Finite search failure is not a proof that no path exists.
+          Singular IK returns supported representatives, not every member of a continuous family.
+          The host runner uses ideal previous-setpoint feedback. No motors, firmware, force control,
+          payload rating, manufacturing fit or physical stopping behavior has been tested.
+        </p>
+      </section>
+    </main>
+    <footer>
+      AXIS / Six-axis Robotic Arm<span>Local computation · No analytics · No hardware access</span>
+    </footer>
+    <script type="module" src="/app.mjs"></script>
+  </body>
+</html>

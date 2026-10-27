@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Kinematic model only: no inertias, effort=0 placeholders, no ros_control/transmissions. -->
+<robot name="six_axis_teaching_arm">
+<link name="base"><visual><origin xyz="0 0 .05"/><geometry><box size=".12 .12 .10"/></geometry></visual></link>
+<link name="yaw"></link>
+<link name="upper"><visual><origin xyz="0.15 0 0" rpy="0 1.5707963267948966 0"/><geometry><cylinder length="0.3" radius="0.025"/></geometry></visual></link>
+<link name="fore"><visual><origin xyz="0.125 0 0" rpy="0 1.5707963267948966 0"/><geometry><cylinder length="0.25" radius="0.022"/></geometry></visual></link>
+<link name="roll"></link>
+<link name="pitch"></link>
+<link name="tool"><visual><origin xyz="0.05 0 0" rpy="0 1.5707963267948966 0"/><geometry><cylinder length="0.1" radius="0.02"/></geometry></visual></link>
+<link name="tcp"/>
+<joint name="q0" type="revolute"><parent link="base"/><child link="yaw"/><origin xyz="0 0 0.15" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-2.6179938779914944" upper="2.6179938779914944" effort="0" velocity="1"/></joint>
+<joint name="q1" type="revolute"><parent link="yaw"/><child link="upper"/><origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 -1 0"/><limit lower="-1.0471975511965976" upper="2.0943951023931953" effort="0" velocity="1"/></joint>
+<joint name="q2" type="revolute"><parent link="upper"/><child link="fore"/><origin xyz="0.3 0 0" rpy="0 0 0"/><axis xyz="0 -1 0"/><limit lower="-2.356194490192345" upper="2.356194490192345" effort="0" velocity="1"/></joint>
+<joint name="q3" type="revolute"><parent link="fore"/><child link="roll"/><origin xyz="0.25 0 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.9670597283903604" upper="2.9670597283903604" effort="0" velocity="1"/></joint>
+<joint name="q4" type="revolute"><parent link="roll"/><child link="pitch"/><origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 -1 0"/><limit lower="-2.0943951023931953" upper="2.0943951023931953" effort="0" velocity="1"/></joint>
+<joint name="q5" type="revolute"><parent link="pitch"/><child link="tool"/><origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.9670597283903604" upper="2.9670597283903604" effort="0" velocity="1"/></joint>
+<joint name="tcp_offset" type="fixed"><parent link="tool"/><child link="tcp"/><origin xyz="0.1 0 0" rpy="0 0 0"/></joint>
+</robot>

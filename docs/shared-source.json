@@ -1,0 +1,9 @@
+{
+  "source_repository": "https://github.com/ungaaaabungaaa/lidar-bionic-arm-search-rescue",
+  "commit": "09afa4e56425508c747d7897ed43222e9e75847b",
+  "path": "src/arm.mjs",
+  "sha256": "522bb396e1c08ddd1db7d10b61ce6cc05904a002d22b71e242f6cdfc842b18dc",
+  "git_blob": "e1c15c140914a2b0d3e07594db90ee7fa45f4364",
+  "license": "Apache-2.0",
+  "adapted": "Conservative segment/box and capsule distance, bounded planner structure and quintic timing. Six-axis geometry, wrist-aware swept bound and model behavior differ."
+}

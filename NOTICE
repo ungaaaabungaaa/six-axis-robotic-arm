@@ -1,0 +1,8 @@
+Six-axis Arm Laboratory
+Copyright 2026 Syed Abdul Muqeeth.
+Apache License, Version 2.0; see LICENSE.
+
+Capsule/box, segment-distance and quintic timing utilities are adapted from the
+owned lidar-bionic-arm-search-rescue project under the same Apache-2.0 license.
+Six-axis pose kinematics, wrist branches, control runner and lab are new work.
+No original course notebooks, datasets or certificate assets are reused.

@@ -13,6 +13,7 @@ for (const name of [
   'controller.mjs',
   'scenes.mjs',
   'lab.mjs',
+  'diagnostics.mjs',
 ])
   await copyFile(new URL('src/' + name, root), new URL('src/' + name, out));
 console.log('Built self-contained static lab in dist/.');

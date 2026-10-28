@@ -13,7 +13,7 @@ const files = new Map([
     '/' + n,
     ['web/' + n, n.endsWith('css') ? 'text/css' : 'text/javascript'],
   ]),
-  ...['math.mjs', 'kinematics.mjs', 'motion.mjs', 'controller.mjs', 'scenes.mjs', 'lab.mjs'].map(
+  ...['math.mjs', 'kinematics.mjs', 'motion.mjs', 'controller.mjs', 'scenes.mjs', 'lab.mjs', 'diagnostics.mjs'].map(
     (n) => ['/src/' + n, ['src/' + n, 'text/javascript']],
   ),
 ]);

@@ -64,7 +64,7 @@ test('real loopback server serves the complete module graph and rejects nonpubli
         pending.push(new URL(specifier, 'http://127.0.0.1:' + port + url).pathname);
       }
     }
-    assert.equal(seen.size, 8);
+    assert.equal(seen.size, 9);
     for (const url of ['/package.json', '/../LICENSE', '/%2e%2e/LICENSE', '/?x=1'])
       assert.equal((await request(url)).status, 404);
     assert.equal((await request('/', 'HEAD')).text, '');

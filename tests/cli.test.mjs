@@ -29,3 +29,11 @@ test('CLI full-pose and FK modes validate units/fields and preserve existing exp
     await rm(dir, { recursive: true, force: true });
   }
 });
+test('solve reports reference singularities and keeps failed paths explicitly null',async()=>{
+ const singular=JSON.parse(await main(['solve','--scene','singular']));
+ assert.equal(singular.singularityDiagnostics.samples,singular.reference.frames.length);
+ assert.ok(singular.singularityDiagnostics.nearSamples.wrist>0);
+ assert.match(singular.singularityDiagnostics.limitation,/not a Jacobian condition number/);
+ const failed=JSON.parse(await main(['solve','--scene','far']));
+ assert.equal(failed.singularityDiagnostics,null);
+});

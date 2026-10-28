@@ -4,6 +4,7 @@ import { planMotion, trajectory } from './motion.mjs';
 import { idealTrackingDemo } from './controller.mjs';
 import { getScene } from './scenes.mjs';
 import { apply, sub, distance } from './math.mjs';
+import { referenceSingularities } from './diagnostics.mjs';
 export function runLab({
   scene = 'inspection',
   target = null,
@@ -77,6 +78,7 @@ export function runLab({
     selected,
     plan,
     reference,
+    singularityDiagnostics: reference ? referenceSingularities(reference.frames) : null,
     control,
     metrics,
     assumptions:

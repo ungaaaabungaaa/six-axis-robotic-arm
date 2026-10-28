@@ -242,7 +242,15 @@ export function planMotion(start, goal, boxes, options = {}) {
     throw error;
   }
 }
-export function trajectory(path, { dt = 0.05, maxVelocity = 1, maxAcceleration = 2 } = {}) {
+export function trajectory(path, options = {}) {
+  if (
+    !options ||
+    typeof options !== 'object' ||
+    Array.isArray(options) ||
+    Object.keys(options).some((key) => !['dt', 'maxVelocity', 'maxAcceleration'].includes(key))
+  )
+    throw Error('Invalid bounded trajectory settings.');
+  const { dt = 0.05, maxVelocity = 1, maxAcceleration = 2 } = options;
   if (
     !Array.isArray(path) ||
     path.length < 2 ||

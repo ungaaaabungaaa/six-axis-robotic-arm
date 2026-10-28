@@ -37,3 +37,13 @@ test('wrist-roll swept tool envelope catches a thin obstacle between clear orien
   assert.equal(poseClear(b, boxes), true);
   assert.equal(edgeClear(a, b, boxes), false);
 });
+test('trajectory rejects misspelled limits instead of silently using faster defaults', () => {
+  const goal = [0.7, 0.8, -1, 0.4, 0.6, -0.3], path = [MODEL.home, goal];
+  for (const options of [{ maxVelociy: 0.2 }, { maxAcceleration: 0.5, dtMs: 50 }, [], null, 'slow'])
+    assert.throws(() => trajectory(path, options), /trajectory settings/);
+  const reference = trajectory(path, { dt: 0.1, maxVelocity: 0.2, maxAcceleration: 0.5 });
+  assert.ok(reference.maxVelocityObserved <= 0.2 + 1e-9);
+  assert.ok(reference.maxAccelerationObserved <= 0.5 + 1e-9);
+  for (let i = 1; i < reference.frames.length; i++)
+    assert.ok(Math.abs(reference.frames[i].time - reference.frames[i - 1].time - 0.1) < 1e-9);
+});
